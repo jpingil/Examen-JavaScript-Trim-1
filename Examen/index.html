@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen</title>
+</head>
+
+<body>
+    <label for="kelvin">Grados Kelvin:</label>
+    <input type="text" name="kelvin" id="kelvin" min="0">
+    <button onclick="guardarValores()">Enviar</button>
+    <br><br>
+    <input type="checkbox" name="ascendente" id="ascendente">
+    <label for="ascendente">Orden ascendente</label><br><br>
+    <input type="radio" name="color" id="coloreado">
+    <label for="color">Coloreado</label>
+    <input type="radio" name="color" id="contraste">
+    <label for="contraste">Alto contraste</label><br><br>
+    <label for="celsius" onmouseover="mostrarCelsius()" onmouseleave="eliminarValores()">Celsius</label>
+    <label for="Farenheit" onmouseover="mostrarFarenheit()" onmouseleave="eliminarValores()">Farenheit</label><br><br>
+    <label for="salida">Salida: </label>
+
+    <script>
+        //Array para guardar los kelvin
+        var kelvin = [];
+
+        //Funcion para guardar los kelvin en el array
+        function guardarValores() {
+            //Cogemos los numeros
+            var textKelvin = document.getElementById("kelvin").value;
+
+            //Metemos los numeros en el array
+            kelvin = textKelvin.split(",");
+            for (let index = 0; index < kelvin.length; index++) {
+                console.log(kelvin[index]);
+            }
+        }
+
+        //Funcion para mostrar los Celsius
+        function mostrarCelsius() {
+            //Array para guardar los celsius
+            var celsius = [];
+            var gradosCelsius = 0;
+
+            //Declaramos la variable ascendente
+            var ascendente = document.getElementById("ascendente").value;
+
+            //Array para los valores ascendentes
+            var celsiusAscendente = [];
+
+            //Declaramos la variable color
+            var color = document.getElementsByName("color").id;
+
+            for (let index = 0; index < kelvin.length; index++) {
+                gradosCelsius = parseInt(kelvin[index]) - 273.15;
+                celsius.push(gradosCelsius);
+            }
+
+            //Comprobamos si tiene que ser ascendente
+            if (ascendente.checked) {
+                celsiusAscendente = celsius.sort();
+                for (let index = 0; index < celsiusAscendente.length; index++) {
+                    var p = document.createElement("p");
+                    p.id = "p" + index;
+                    p.innerHTML = celsiusAscendente[index];
+                    document.body.appendChild(p);
+                }
+            } else {
+                //Nos recorremos los celsius para crear un p para cada valor, porque despues tenemos que comprobar los radios, y para cambiar el color
+                //es mas facil así
+                for (let index = 0; index < celsius.length; index++) {
+                    var p = document.createElement("p");
+                    p.id = "p" + index;
+                    p.innerHTML = celsius[index];
+                    document.body.appendChild(p);
+                }
+            }
+
+            //Comprobamos el color
+            if (color == "coloreado") {
+                for (let index = 0; index < kelvin.length; index++) {
+                    var p = document.getElementById("p" + index);
+                    if (p.innerHTML < 0) {
+                        p.style.color = "rgb(140, 0, 255)";
+                    } else if (p.innerHTML >= 0 && p.innerHTML <= 100) {
+                        p.style.color = "rgb(0, 0, 255)";
+                    } else if (p.innerHTML >= 101 && p.innerHTML <= 200) {
+                        p.style.color = "rgb(0, 255, 0)";
+                    } else if (p.innerHTML >= 201 && p.innerHTML <= 300) {
+                        p.style.color = "rgb(255, 255, 0)";
+                    } else if (p.innerHTML >= 300 && p.innerHTML <= 400) {
+                        p.style.color = "rgb(255, 115, 0)";
+                    } else {
+                        p.style.color = "rgb(255, 0, 0)";
+                    }
+                }
+            } else if (color == "contraste") {
+                for (let index = 0; index < kelvin.length; index++) {
+                    var p = document.getElementById("p" + index);
+                    p.style.backgroundColor = "black";
+                    p.style.color = "white";
+                }
+            }
+        }
+
+        //Funcion para mostrar los farenheit
+        function mostrarFarenheit() {
+            //Array para guardar los Farenheit
+            var farenheit = [];
+            var gradosFarenheit = 0;
+
+            //Declaramos la variable ascendente
+            var ascendente = document.getElementById("ascendente").value;
+
+            //Array para los valores ascendetes
+            var farenheitAscendente = [];
+
+            for (let index = 0; index < kelvin.length; index++) {
+                gradosFarenheit = 1.8 * (parseInt(kelvin[index]) - 273.15) + 32;
+                farenheit.push(gradosFarenheit);
+            }
+
+
+            //Comprobamos si tiene que ser ascendente
+            if (ascendente.checked) {
+                farenheitAscendente = farenheit.sort();
+                for (let index = 0; index < farenheitAscendente.length; index++) {
+                    var p = document.createElement("p");
+                    p.innerHTML = farenheitAscendente[index];
+                    document.body.appendChild(p);
+                }
+            } else {
+                for (let index = 0; index < farenheit.length; index++) {
+                    var p = document.createElement("p");
+                    p.innerHTML = farenheit[index];
+                    document.body.appendChild(p);
+                }
+            }
+
+            //Comprobamos el color
+            if (color == "coloreado") {
+                for (let index = 0; index < kelvin.length; index++) {
+                    var p = document.getElementById("p" + index);
+                    if (p.innerHTML < 0) {
+                        p.style.color = "rgb(140, 0, 255)";
+                    } else if (p.innerHTML >= 0 && p.innerHTML <= 100) {
+                        p.style.color = "rgb(0, 0, 255)";
+                    } else if (p.innerHTML >= 101 && p.innerHTML <= 200) {
+                        p.style.color = "rgb(0, 255, 0)";
+                    } else if (p.innerHTML >= 201 && p.innerHTML <= 300) {
+                           //Funcion para quitar celsius y farenheit
+        function eliminarValores() {
+            //La cantidad de p que hay es igual a la longitud de kelvin
+            for (let index = 0; index < kelvin.length; index++) {
+                document.body.removeChild("p");
+            }
+        }     p.style.color = "rgb(255, 255, 0)";
+                    } else if (p.innerHTML >= 300 && p.innerHTML <= 400) {
+                        p.style.color = "rgb(255, 115, 0)";
+                    } else {
+                        p.style.color = "rgb(255, 0, 0)";
+                    }
+                }
+            } else if (color == "contraste") {
+                for (let index = 0; index < kelvin.length; index++) {
+                    var p = document.getElementById("p" + index);
+                    p.style.backgroundColor = "black";
+                    p.style.color = "white";
+                }
+            }
+        }
+
+        //Funcion para quitar celsius y farenheit
+        function eliminarValores() {
+            //La cantidad de p que hay es igual a la longitud de kelvin
+            for (let index = 0; index < kelvin.length; index++) {
+                p = document.getElementsByTagName("p");
+                document.body.removeChild(p);
+            }
+        }
+
+        /*
+            Notas:
+                La comprobación del color está mal. Tenía que haberla hecho con los kelvin en vez de con el contenido del p
+                Creé un botón que no pedías para pasar los numeros. Intenté hacerlo con el onkeyup, y cogía bien los números, pero tuve un problema con el 
+                backspace, y decidí hacerlo así.
+                No funciona nada, pero fuí haciendo código.
+        */
+    </script>
+</body>
+
+</html>
